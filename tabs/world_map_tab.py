@@ -70,12 +70,12 @@ def create_world_map_tab(happ_dfs_dict, world_df, name_mapping_dict):
             <div>
               <img
                   src="infovis_app/static/@status.jpg" height="35" alt="@status" width="35"
-                  style="float: left; margin: 0px 15px 15px 0px;"
-                  border="2"
+                  style="float: left; margin: 0px 10px 10px 0px;"
+                  border="0"
               ></img>
             </div>
             <div>
-                <span style="font-size: 15px; font-weight: bold;"><font color="#CEACE6">Country:</font> @name</span>
+                <span style="font-size: 15px; font-weight: bold;"> @name</span>
             </div>
             <div>
                 <span style="font-size: 15px; color: #966;"><font color="#CEACE6">Rank:</font> @rank</span>
