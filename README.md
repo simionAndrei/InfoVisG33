@@ -53,6 +53,7 @@ conda install requests
 
 If you encounter problems with [`fiona`](https://anaconda.org/conda-forge/fiona) package, you should uninstall it and install *1.6 version*:
 ```
+conda uninstall fiona
 conda install fiona=1.6
 ```
 
