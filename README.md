@@ -38,8 +38,8 @@ infovis_app
 ```
 
 ## Environment
-The application can be run in [Anaconda](https://www.anaconda.com/) Windows environment.
-After installing anaconda, an enviroment needs to be created:
+The application can be run in [Anaconda](https://www.anaconda.com/download/) Windows environment.
+After installing anaconda, an *python 3.5* enviroment needs to be created:
 ```
 conda create -n datavis_prj python=3.5 numpy pandas scipy
 ```
