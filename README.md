@@ -64,4 +64,4 @@ bokeh serve infovis_app -- show
 ```
 
 ## Demo
-![App demo](https://github.com/simionAndrei/InfoVisG33/master/app_demo.gif)
+![App demo](https://github.com/simionAndrei/InfoVisG33/blob/master/app_demo.gif)
