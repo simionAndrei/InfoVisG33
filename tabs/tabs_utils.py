@@ -12,7 +12,8 @@ def format_data(happ_df, name_mapping_dict):
   new_names = [name_mapping_dict[e] for e in orig_names]
   happ_df['country'] = new_names
 
-  happ_df = pd.concat([happ_df[['country', 'happiness_rank', 'happiness_score']], happ_df.iloc[:, -7:]], axis = 1)
+  happ_df = pd.concat([happ_df[['country', 'happiness_rank', 'happiness_score']], 
+    happ_df.iloc[:, -7:]], axis = 1)
   happ_df.columns = ['name', 'rank', 'score'] + [e.split('_')[0] for e in happ_df.columns[-7:]]
 
   return happ_df

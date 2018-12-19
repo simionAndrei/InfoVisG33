@@ -1,5 +1,5 @@
-from bokeh.models import GeoJSONDataSource, Panel, ColumnDataSource
-from bokeh.models import LinearColorMapper, ColorBar, FixedTicker, HoverTool, FuncTickFormatter
+from bokeh.models import GeoJSONDataSource, Panel, ColumnDataSource, HoverTool
+from bokeh.models import LinearColorMapper, ColorBar, FixedTicker, FuncTickFormatter
 from bokeh.layouts import column, row, WidgetBox, layout
 from bokeh.plotting import figure
 from bokeh.models.widgets import Slider
@@ -16,7 +16,8 @@ import os
 def create_world_map_tab(happ_dfs_dict, world_df, name_mapping_dict):
 
   def make_map_dataset(year):
-    happ_df = pd.read_csv(os.path.join(os.path.join(os.path.dirname(__file__), os.pardir), "data", happ_dfs_dict[year]))
+    happ_df = pd.read_csv(os.path.join(os.path.join(os.path.dirname(__file__), os.pardir), 
+      "data", happ_dfs_dict[year]))
 
     happ_df = format_data(happ_df, name_mapping_dict)
     final_df = happ_df.merge(world_df, on='name')
@@ -38,13 +39,15 @@ def create_world_map_tab(happ_dfs_dict, world_df, name_mapping_dict):
     tmp_geo = final_df['geometry']
     final_df = final_df.drop(['geometry'], axis = 1)
     crs = {'init': 'epsg:4326'}
-    custom_src = GeoJSONDataSource(geojson = gpd.GeoDataFrame(final_df, crs=crs, geometry=tmp_geo).to_json())
+    custom_src = GeoJSONDataSource(geojson = gpd.GeoDataFrame(final_df, crs=crs, 
+      geometry=tmp_geo).to_json())
 
     return custom_src
 
 
   def make_hist_dataset(year, bin_width):
-    happ_df = pd.read_csv(os.path.join(os.path.join(os.path.dirname(__file__), os.pardir), "data", happ_dfs_dict[year]))
+    happ_df = pd.read_csv(os.path.join(os.path.join(os.path.dirname(__file__), os.pardir), 
+      "data", happ_dfs_dict[year]))
 
     happ_df = format_data(happ_df, name_mapping_dict)
 

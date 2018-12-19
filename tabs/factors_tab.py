@@ -95,7 +95,6 @@ def create_factors_tab(happ_dfs_dict, name_mapping_dict, world_df):
       tools = "save")
     p.xaxis.major_label_orientation = math.pi/2
 
-    colors = ["#75968f", "#a5bab7", "#c9d9d3", "#e2e2e2", "#dfccce", "#ddb7b1", "#cc7878", "#933b41", "#550b1d"]
     color_map = LinearColorMapper(palette=RdGy[9], low=-1, high=1)
 
     p.rect('Idx', 'Cols', width=1, height=1, source=src, line_color=None, 
