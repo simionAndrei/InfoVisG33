@@ -110,7 +110,7 @@ def create_world_map_tab(happ_dfs_dict, world_df, name_mapping_dict):
   def make_hist(src):
 
     p = figure(plot_width = 400, plot_height = 500, title = 'Histogram of Happiness Score',
-                x_axis_label = 'Score (0-10)', y_axis_label = 'Count')
+                x_axis_label = 'Score (0-10)', y_axis_label = 'Count', tools = "save")
 
     p.quad(source = src, bottom=0, top='top', left='left', right='right', 
             fill_color='orange', line_color='black', fill_alpha = 0.7, 
@@ -128,7 +128,6 @@ def create_world_map_tab(happ_dfs_dict, world_df, name_mapping_dict):
     p = style(p, size = "small")
 
     return p
-
 
   def update(attr, old, new):
 
