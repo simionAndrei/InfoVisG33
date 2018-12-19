@@ -78,5 +78,7 @@ bokeh serve infovis_app -- show
 
 ## Inspiration
 [Bokeh tutorial](https://towardsdatascience.com/data-visualization-with-bokeh-in-python-part-one-getting-started-a11655a467d4)
+
 [Bokeh docs](https://bokeh.pydata.org/en/latest/docs/reference.html)
+
 [World happiness visualization](https://www.kaggle.com/meldadede/world-happiness-2017-visualization-examples)
