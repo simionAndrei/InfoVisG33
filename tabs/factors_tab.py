@@ -34,7 +34,7 @@ def create_factors_tab(happ_dfs_dict, name_mapping_dict, world_df):
   def make_plot(src):
 
     p = figure(plot_width = 700, plot_height = 600, title="Factor contribution to the happiness score",
-      x_axis_label = 'Happiness Score', y_axis_label = 'Factor influence')
+      x_axis_label = 'Factor influence', y_axis_label = 'Happiness Score')
 
     regions = np.unique(src.data['selected_continent'])
     print(regions)
@@ -42,7 +42,7 @@ def create_factors_tab(happ_dfs_dict, name_mapping_dict, world_df):
     colors = ['orange', 'blue', 'red', 'yellow', 'navy', 'maroon']
     color_map = CategoricalColorMapper(factors=regions, palette=colors[:regions.shape[0]])
 
-    p.circle(x = 'score', y = 'factor', size = 10, 
+    p.circle(x = 'factor', y = 'score', size = 10, 
       color = {'field': 'selected_continent', 'transform': color_map},
       legend='selected_continent', source = src)
 

@@ -119,6 +119,7 @@ def create_world_map_tab(happ_dfs_dict, world_df, name_mapping_dict):
     hover = HoverTool(
         tooltips=[
             ("Count", "@top"),
+            ("Interval", "@left{(0.00)} - @right{(0.00)}")
         ], mode='vline'
     )
 
