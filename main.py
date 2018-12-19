@@ -1,5 +1,5 @@
-from bokeh.io import curdoc
 from bokeh.models.widgets import Tabs
+from bokeh.io import curdoc
 
 from tabs.world_map_tab import create_world_map_tab
 from tabs.factors_tab import create_factors_tab
