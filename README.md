@@ -58,7 +58,27 @@ conda install fiona=1.6
 ```
 
 ## Run
-To run the application, inside `datavis_prj` enviroment from the parent directory of `infovis_app` folder type the following command:
+
+Clone this repository and save all the files and folders into a directory named `infovis_app`.
+At the end of this setup step you should have the following files in your working directory:
+```
+(folder) infovis_app
+    (folder) data
+    (folder) static
+    (folder) tabs
+    (file) main.py
+```
+To run the application, inside `datavis_prj` enviroment from the parent directory of `infovis_app` folder, type the following command:
 ```
 bokeh serve infovis_app -- show
 ```
+
+## Demo
+![App demo](https://github.com/simionAndrei/InfoVisG33/blob/master/app_demo.gif)
+
+## Inspiration
+[Bokeh tutorial](https://towardsdatascience.com/data-visualization-with-bokeh-in-python-part-one-getting-started-a11655a467d4)
+
+[Bokeh docs](https://bokeh.pydata.org/en/latest/docs/reference.html)
+
+[World happiness visualization](https://www.kaggle.com/meldadede/world-happiness-2017-visualization-examples)
