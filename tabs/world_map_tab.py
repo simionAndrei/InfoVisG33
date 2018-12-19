@@ -60,9 +60,9 @@ def create_world_map_tab(happ_dfs_dict, world_df, name_mapping_dict):
     p = figure(plot_width = 900, plot_height = 600, title="Happiness Map")
     p.axis.visible = False
 
-    p.patches('xs', 'ys', fill_alpha=0.7, 
-           fill_color={'field': 'score', 'transform': LinearColorMapper(palette=Viridis256)}, 
-             line_color='black', line_width=0.5, source=src)
+    collor_filler = {'field': 'score', 'transform': LinearColorMapper(palette=Viridis256)}
+    p.patches('xs', 'ys', fill_alpha=0.9, fill_color=collor_filler, line_color='black', 
+      line_width=0.5, hover_fill_color = collor_filler, hover_fill_alpha = 1.0, source=src)
 
     hover = HoverTool(
         tooltips="""
@@ -113,7 +113,16 @@ def create_world_map_tab(happ_dfs_dict, world_df, name_mapping_dict):
                 x_axis_label = 'Score (0-10)', y_axis_label = 'Count')
 
     p.quad(source = src, bottom=0, top='top', left='left', right='right', 
-            fill_color='orange', line_color='black')
+            fill_color='orange', line_color='black', fill_alpha = 0.7, 
+            hover_fill_color = 'orange', hover_fill_alpha = 1.0)
+
+    hover = HoverTool(
+        tooltips=[
+            ("Count", "@top"),
+        ], mode='vline'
+    )
+
+    p.add_tools(hover)
 
     p = style(p, size = "small")
 
