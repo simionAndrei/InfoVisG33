@@ -62,3 +62,6 @@ To run the application, inside `datavis_prj` enviroment from the parent director
 ```
 bokeh serve infovis_app -- show
 ```
+
+## Demo
+![App demo](https://github.com/simionAndrei/InfoVisG33/master/app_demo.gif)
