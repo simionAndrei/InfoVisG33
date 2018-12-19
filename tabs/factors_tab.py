@@ -16,6 +16,14 @@ import os
 
 def create_factors_tab(happ_dfs_dict, name_mapping_dict, world_df):
 
+  '''
+
+  Read happiness data from the provided year
+  Format and merge with geopandas world map dataset
+  Add factor column in order to provide data for scatterplot
+  Add selected continent for scatterplot continent filtering
+
+  '''
   def make_dataset(year, factor, continent):
 
     happ_df = pd.read_csv(os.path.join(os.path.join(os.path.dirname(__file__), os.pardir),
@@ -23,7 +31,6 @@ def create_factors_tab(happ_dfs_dict, name_mapping_dict, world_df):
 
     final_df = format_data(happ_df, name_mapping_dict)
     final_df = final_df.merge(world_df, on='name')
-    final_df['formatted_score'] = ["{:.2f}".format(s) for s in final_df['score'].values]
     final_df['factor'] = final_df[factor]
     final_df = final_df.drop(['geometry'], axis = 1)
     
@@ -35,6 +42,14 @@ def create_factors_tab(happ_dfs_dict, name_mapping_dict, world_df):
     return ColumnDataSource(final_df)
 
 
+  '''
+
+  Read happiness data from the provided year
+  Format data
+  Compute Pearson correlation between all factors
+  Prepare data for bokeh p.rect
+  
+  '''
   def make_corr_dataset(year):
 
     happ_df = pd.read_csv(os.path.join(os.path.join(os.path.dirname(__file__), os.pardir),
@@ -43,6 +58,8 @@ def create_factors_tab(happ_dfs_dict, name_mapping_dict, world_df):
     final_df = format_data(happ_df, name_mapping_dict) 
     final_df = final_df.drop("rank", axis = 1)
     corr_df = final_df.corr()
+
+    # needed for the way we access data on make_corr_plot
     corr_df.index.name = 'Idx'
     corr_df.columns.name = 'Cols'
     corr_df = corr_df.stack().rename("value").reset_index()
@@ -50,12 +67,17 @@ def create_factors_tab(happ_dfs_dict, name_mapping_dict, world_df):
     return ColumnDataSource(corr_df)
 
 
+  '''
+  Create scatterplot with high-contrasting manually created pallete 
+
+  '''
   def make_plot(src):
 
     p = figure(plot_width = 700, plot_height = 600, 
       title="Factor contribution to the happiness score",
       x_axis_label = 'Factor influence', y_axis_label = 'Happiness Score')
 
+    # color mapping is given by continents
     regions = np.unique(src.data['selected_continent'])
     
     colors = ['orange', 'blue', 'red', 'yellow', 'navy', 'maroon']
@@ -65,6 +87,7 @@ def create_factors_tab(happ_dfs_dict, name_mapping_dict, world_df):
       color = {'field': 'selected_continent', 'transform': color_map},
       legend='selected_continent', source = src)
 
+    # draw legend outside the figure
     new_legend = p.legend[0]
     p.legend[0].plot = None
     p.add_layout(new_legend, 'right')
@@ -84,6 +107,12 @@ def create_factors_tab(happ_dfs_dict, name_mapping_dict, world_df):
 
     return p
 
+
+
+  '''
+  Create correlation matrix as a heatmap with divergent GrayRed pallete
+
+  '''
   def make_corr_plot(src):
 
     p = figure(plot_width = 400, plot_height = 400, title = "Factors correlation matrix",
@@ -115,6 +144,10 @@ def create_factors_tab(happ_dfs_dict, name_mapping_dict, world_df):
 
     return p
 
+
+  '''
+  Update the bokeh data sources used for plotting based on dynamic widget interaction
+  '''
   def update(attr, old, new):
 
     year = year_select.value
@@ -126,6 +159,11 @@ def create_factors_tab(happ_dfs_dict, name_mapping_dict, world_df):
     src.data = new_src.data
     corr_src.data = new_corr_src.data
 
+
+
+  '''
+  Create all the elements: widgets, data sources, figures and layout
+  '''
 
   year_select = Slider(start = 2015, end = 2017, step = 1, value = 2015,
     title ='Report Year')

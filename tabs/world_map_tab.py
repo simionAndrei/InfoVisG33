@@ -15,6 +15,16 @@ import os
 
 def create_world_map_tab(happ_dfs_dict, world_df, name_mapping_dict):
 
+
+  '''
+  
+  Read happiness data from the provided year
+  Format and merge with geopandas world map dataset
+  Add formatted_score column for the custom HTML hover tool score display
+  Add status column for the happiness emoji on ohvertool
+  Prepare data for bokeh p.patches
+  
+  '''
   def make_map_dataset(year):
     happ_df = pd.read_csv(os.path.join(os.path.join(os.path.dirname(__file__), os.pardir), 
       "data", happ_dfs_dict[year]))
@@ -23,6 +33,7 @@ def create_world_map_tab(happ_dfs_dict, world_df, name_mapping_dict):
     final_df = happ_df.merge(world_df, on='name')
     final_df['formatted_score'] = ["{:.2f}".format(s) for s in final_df['score'].values]
 
+    # 0 ..... Sad ..... mean - std ..... Neutral .... mean ......  Neutral .... mean + std ... Happy...
     countries_status = []
     scores = final_df['score'].values
     mean, std = scores.mean(), scores.std()
@@ -45,6 +56,13 @@ def create_world_map_tab(happ_dfs_dict, world_df, name_mapping_dict):
     return custom_src
 
 
+  '''
+  
+  Read happiness data from the provided year
+  Format data
+  Compute histogram counts and intervals
+
+  '''
   def make_hist_dataset(year, bin_width):
     happ_df = pd.read_csv(os.path.join(os.path.join(os.path.dirname(__file__), os.pardir), 
       "data", happ_dfs_dict[year]))
@@ -58,6 +76,10 @@ def create_world_map_tab(happ_dfs_dict, world_df, name_mapping_dict):
     return ColumnDataSource(final_df)
 
 
+  '''
+  Create world map with lighter to darker color filling pallete and customize
+  HTML hovertool for displaying happiness status as emoji
+  '''
   def make_map(src):
 
     p = figure(plot_width = 900, plot_height = 600, title="Happiness Map")
@@ -92,8 +114,10 @@ def create_world_map_tab(happ_dfs_dict, world_df, name_mapping_dict):
 
     p.add_tools(hover)
 
+    # lowest happiness score around 2.4 and highest around 7.6
     color_mapper = LinearColorMapper(palette=Viridis256, low=2.3, high=7.7)
     ticker = FixedTicker(ticks=[3, 4, 5, 6, 7])
+    # labels for the colorbar in intervals
     formatter = FuncTickFormatter(code="""
       data = {3: '<3', 4: '3-4', 5: '4-5', 6: '5-6', 7: '>7'}
       return data[tick]
@@ -109,7 +133,11 @@ def create_world_map_tab(happ_dfs_dict, world_df, name_mapping_dict):
 
     return p
 
+  
+  '''
+  Create histogram for happiness score distribution
 
+  '''
   def make_hist(src):
 
     p = figure(plot_width = 400, plot_height = 500, title = 'Histogram of Happiness Score',
@@ -131,6 +159,10 @@ def create_world_map_tab(happ_dfs_dict, world_df, name_mapping_dict):
 
     return p
 
+
+  '''
+  Update the bokeh data sources used for plotting based on dynamic widget interaction
+  '''
   def update(attr, old, new):
 
     year = year_select.value
@@ -141,6 +173,12 @@ def create_world_map_tab(happ_dfs_dict, world_df, name_mapping_dict):
 
     map_src.geojson = new_map_src.geojson
     hist_src.data = new_hist_src.data
+
+
+
+  '''
+  Create all the elements: widgets, data sources, figures and layout
+  '''
 
   year_select = Slider(start = 2015, end = 2017, step = 1, value = 2015,
     title ='Report Year')
