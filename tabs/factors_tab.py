@@ -41,13 +41,11 @@ def create_factors_tab(happ_dfs_dict, name_mapping_dict, world_df):
       "data", happ_dfs_dict[year]))
 
     final_df = format_data(happ_df, name_mapping_dict) 
+    final_df = final_df.drop("rank", axis = 1)
     corr_df = final_df.corr()
     corr_df.index.name = 'Idx'
     corr_df.columns.name = 'Cols'
     corr_df = corr_df.stack().rename("value").reset_index()
-
-    print(year)
-    print(corr_df)
 
     return ColumnDataSource(corr_df)
 
@@ -59,7 +57,6 @@ def create_factors_tab(happ_dfs_dict, name_mapping_dict, world_df):
       x_axis_label = 'Factor influence', y_axis_label = 'Happiness Score')
 
     regions = np.unique(src.data['selected_continent'])
-    print(regions)
     
     colors = ['orange', 'blue', 'red', 'yellow', 'navy', 'maroon']
     color_map = CategoricalColorMapper(factors=regions, palette=colors[:regions.shape[0]])
@@ -92,29 +89,28 @@ def create_factors_tab(happ_dfs_dict, name_mapping_dict, world_df):
     p = figure(plot_width = 400, plot_height = 400, title = "Factors correlation matrix",
       x_range=list(np.unique(src.data['Idx'])),
       y_range=list(np.unique(src.data['Cols'])),
-      tools = "save")
+      tools="save")
     p.xaxis.major_label_orientation = math.pi/2
 
     color_map = LinearColorMapper(palette=RdGy[9], low=-1, high=1)
 
-    p.rect('Idx', 'Cols', width=1, height=1, source=src, line_color=None, 
-      fill_color = {'field': 'value', 'transform': color_map})
+    p.rect('Idx', 'Cols', width=1, height=1, line_color=None, 
+      fill_color = {'field': 'value', 'transform': color_map}, source=src)
+
+    hover = HoverTool(
+        tooltips=[
+            ("Pair", "(@Idx, @Cols)"),
+            ("Correlation", "@value{(0.00)}")
+        ]
+    )
+
+    p.add_tools(hover)
     
     color_bar = ColorBar(color_mapper=color_map, ticker=BasicTicker(desired_num_ticks=9), 
       major_tick_out=0, major_tick_in=0, major_label_text_align='left',
       major_label_text_font_size='10pt', label_standoff=2, location=(0,0))
 
     p.add_layout(color_bar, 'right')
-
-    hover = HoverTool(
-        tooltips=[
-            ("Pair", "(@Idx, @Cols)"),
-            ("Correlation", "@value{0.00}")
-        ]
-    )
-
-
-    p.add_tools(hover)
     p = style(p, "small")
 
     return p
@@ -128,7 +124,7 @@ def create_factors_tab(happ_dfs_dict, name_mapping_dict, world_df):
     new_src = make_dataset(year = year, factor = factor, continent = continent)
     new_corr_src = make_corr_dataset(year = year)
     src.data = new_src.data
-    corr_src = 0
+    corr_src.data = new_corr_src.data
 
 
   year_select = Slider(start = 2015, end = 2017, step = 1, value = 2015,

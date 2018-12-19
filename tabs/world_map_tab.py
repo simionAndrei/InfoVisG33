@@ -127,7 +127,6 @@ def create_world_map_tab(happ_dfs_dict, world_df, name_mapping_dict):
     )
 
     p.add_tools(hover)
-
     p = style(p, size = "small")
 
     return p
